@@ -1,5 +1,10 @@
 # coding: utf-8
 
+"""
+    Модуль для автоматической генерации данных в базе.
+    Используется в целях тестирования.
+"""
+
 import random
 from .models import Author, User, Category, Post, Comment
 

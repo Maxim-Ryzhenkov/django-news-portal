@@ -55,7 +55,7 @@ ROOT_URLCONF = 'news_portal.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR.joinpath('templates'), ],     # Добавляем сюда путь к шаблонам
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -122,3 +122,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Добавляем путь к папке со статическими файлами
+STATICFILES_DIRS = [
+    BASE_DIR.joinpath('static'),
+]

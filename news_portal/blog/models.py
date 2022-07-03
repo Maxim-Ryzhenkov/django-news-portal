@@ -13,9 +13,9 @@ class Author(models.Model):
 
     def update_rating(self):
         """
-        суммарный рейтинг каждой статьи автора умножается на 3;
-        суммарный рейтинг всех комментариев автора;
-        суммарный рейтинг всех комментариев к статьям автора.
+            суммарный рейтинг каждой статьи автора умножается на 3;
+            суммарный рейтинг всех комментариев автора;
+            суммарный рейтинг всех комментариев к статьям автора.
         """
         posts_rating = self.posts.aggregate(result=Sum('rating')).get('result')
         comments_rating = self.user.comments.aggregate(result=Sum('rating')).get('result')
@@ -59,14 +59,16 @@ class Post(models.Model):
                f"post_type='{self.post_type}')"
 
     def like(self):
+        """ Увеличить на единицу значение 'Post.rating'. """
         self.rating += 1
         self.save()
 
     def dislike(self):
+        """ Уменьшить на единицу значение 'Post.rating'. """
         self.rating -= 1
         self.save()
 
-    def preview(self, length=124):
+    def preview(self, length=124) -> str:
         """ Вернуть превью статьи. """
         return f"{self.text[:length]}..." if len(self.text) > length else self.text
 
@@ -86,9 +88,11 @@ class Comment(models.Model):
     rating = models.IntegerField(default=0)
 
     def like(self):
+        """ Увеличить на единицу значение 'Comment.rating'. """
         self.rating += 1
         self.save()
 
     def dislike(self):
+        """ Уменьшить на единицу значение 'Comment.rating'. """
         self.rating -= 1
         self.save()
