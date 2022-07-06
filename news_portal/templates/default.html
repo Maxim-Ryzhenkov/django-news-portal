@@ -27,6 +27,9 @@
            <ul class="navbar-nav ml-auto">
                <li class="nav-item"> <a class="nav-link" href="/news/">Все посты</a></li>
                <li class="nav-item"> <a class="nav-link" href="/admin/">Админка</a></li>
+               <li class="nav-item"> <a class="nav-link" href="{% url 'search_posts' %}">Поиск</a></li>
+               <li class="nav-item"> <a class="nav-link" href="/news/articles/create/">Добавить статью</a></li>
+               <li class="nav-item"> <a class="nav-link" href="/news/news/create/">Добавить Новость</a></li>
                <!-- Добавить здесь новые пункты меню. -->
            </ul>
            <h1>{{ request.resolver_match.view_name }}</h1>

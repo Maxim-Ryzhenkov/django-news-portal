@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
+from django.urls import reverse
 
 
 class Author(models.Model):
@@ -9,7 +10,10 @@ class Author(models.Model):
     rating = models.SmallIntegerField(default=0)
 
     def __repr__(self):
-        return f"Author (user.name='{self.user.username}', rating='{self.rating}')"
+        return f"Author (user.name='{self.user}', rating='{self.rating}')"
+
+    def __str__(self):
+        return f"{self.user}"
 
     def update_rating(self):
         """
@@ -19,7 +23,7 @@ class Author(models.Model):
         """
         posts_rating = self.posts.aggregate(result=Sum('rating')).get('result')
         comments_rating = self.user.comments.aggregate(result=Sum('rating')).get('result')
-        print(f"===== {self.user.username}: обновляем рейтинг автора =====")
+        print(f"===== {self.user}: обновляем рейтинг автора =====")
         print(f"Рейтинг постов = {posts_rating}")
         print(f"Рейтинг комментов = {comments_rating}")
         self.rating = 3 * posts_rating + comments_rating
@@ -29,11 +33,15 @@ class Author(models.Model):
 
 class Category(models.Model):
     """ Категории новостей / статей — темы, которые
-        они отражают(спорт, политика, образование и т.д.). """
+        они отражают(спорт, политика, образование и т.д.).
+        Здесь категории, то же что тэги. Их можно добавлять любое количество."""
     name = models.CharField(unique=True, max_length=128)
 
     def __repr__(self):
         return f"Category (name='{self.name}')"
+
+    def __str__(self):
+        return f"{self.name}"
 
 
 class Post(models.Model):
@@ -55,7 +63,7 @@ class Post(models.Model):
     rating = models.SmallIntegerField(default=0)
 
     def __repr__(self):
-        return f"Post (author.user.name='{self.author.user.username}', title='{self.title}', rating='{self.rating}'," \
+        return f"Post (author.user.name='{self.author.user}', title='{self.title}', rating='{self.rating}'," \
                f"post_type='{self.post_type}')"
 
     def like(self):
@@ -71,6 +79,10 @@ class Post(models.Model):
     def preview(self, length=124) -> str:
         """ Вернуть превью статьи. """
         return f"{self.text[:length]}..." if len(self.text) > length else self.text
+
+    def get_absolute_url(self):
+        """ Вернуть url, зарегистрированный для отображения одиночного товара """
+        return reverse('post_detail', args=[str(self.id)])
 
 
 class PostCategory(models.Model):

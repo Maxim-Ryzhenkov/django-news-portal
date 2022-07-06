@@ -8,8 +8,17 @@
 Posts
 {% endblock title %}
 
-<!-- В контенте на странице мы выводим все посты -->
+<!-- В контенте на странице выводим форму поиска постов. -->
 {% block content %}
+
+{# Форма фильтра 'PostFilter' #}
+    <form action="" method="GET">
+        {# Переменная, которую мы передали через контекст, может сгенерировать форму с полями #}
+        {{ search_filter.form.as_p }}
+        <input type="submit" value="Найти" class="btn btn-success"/>
+        <a class="btn btn-secondary" role="button" href="{{ request.path }}">Сбросить фильтры</a>
+    </form>
+
 <div class="col-lg-12 text-center">
     <h1>Все посты</h1>
     <h3>Всего постов: {{ posts|length }}</h3>
@@ -31,8 +40,8 @@ Posts
             <td>{{ post.date_time }}</td>
             <td>{{ post.text | truncatewords:20 | censor}}</td>
             <td><a class="btn btn-primary btn-sm" href="/news/{{ post.pk }}">Читать</a></td>
-            <td><a class="btn btn-primary btn-sm" href="/news/news/{{ post.pk }}/edit/">Редактировать</a></td>
-            <td><a class="btn btn-primary btn-sm" href="/news/news/{{ post.pk }}/delete/">Удалить</a></td>
+            <td><a class="btn btn-primary btn-sm" href="/news/{{ post.pk }}/edit/">Редактировать</a></td>
+            <td><a class="btn btn-primary btn-sm" href="/news/{{ post.pk }}/delete/">Удалить</a></td>
         </tr>
         {% endfor %}
         </tbody>
